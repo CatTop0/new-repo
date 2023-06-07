@@ -56,7 +56,6 @@
             this.PasswordField.Size = new System.Drawing.Size(200, 26);
             this.PasswordField.TabIndex = 1;
             this.PasswordField.Text = "Пароль";
-            this.PasswordField.UseSystemPasswordChar = true;
             this.PasswordField.Enter += new System.EventHandler(this.PasswordField_Enter);
             this.PasswordField.Leave += new System.EventHandler(this.PasswordField_Leave);
             // 
@@ -112,7 +111,6 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "LoginForm";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

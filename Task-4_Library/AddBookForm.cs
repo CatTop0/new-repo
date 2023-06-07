@@ -28,9 +28,6 @@ namespace Task_4_Library
                 AuthorField.Text = _book.BookAuthor;
                 NumberField.Text = _book.BookInvenoryNumber.ToString();
             }
-            //NameField.Text = _book.BookName;
-            //AuthorField.Text = _book.BookAuthor;
-            //NumberField.Text = _book.BookInvenoryNumber.ToString();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -98,13 +95,8 @@ namespace Task_4_Library
                     this.Close();
                     BookListForm bookListForm = new BookListForm(null, 1);
                     bookListForm.Show();
-                }
-                //_book.BookName = NameField.Text;
-                //_book.BookAuthor = AuthorField.Text;
-                //_book.BookInvenoryNumber = Convert.ToInt32(NumberField.Text);
-                
-            }
-            
+                }  
+            }  
         }
 
         private void LogInBtn_Click(object sender, EventArgs e)

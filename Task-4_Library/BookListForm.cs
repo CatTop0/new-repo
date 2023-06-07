@@ -21,12 +21,12 @@ namespace Task_4_Library
         private int currentPage = 1;
         private int _itemsPerPage = 3;
         private string _selectedSort = "Без сортировки";
-        public BookListForm(string ufn, int ur)
+        public BookListForm(string userFullname, int userRole)
         {
             InitializeComponent();
             CenterToScreen();
-            userRole = ur;
-            FullName.Text=ufn;
+            this.userRole = userRole;
+            FullName.Text= userFullname;
 
             if (userRole == 1 || userRole == 2)
             {
@@ -41,7 +41,7 @@ namespace Task_4_Library
         private void LogInBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
-            LoginForm loginForm =new LoginForm();
+            LoginForm loginForm = new LoginForm();
             loginForm.Show();
         }
 
@@ -53,6 +53,8 @@ namespace Task_4_Library
             comboBox1.Items.Add("По убыванию даты выдачи");
             comboBox1.SelectedIndex = 0;
         }
+
+        //Лучше это переделать путём организации шаблона через конструктор и применения данных из БД, скрывая шаблон, когда
         public static void GenerateCards(TableLayoutPanel tableLayoutPanel1, List<Book> books, int userRole)
         {
             User user = new User();
@@ -63,49 +65,17 @@ namespace Task_4_Library
                 bookCard.BorderStyle = BorderStyle.FixedSingle;
                 bookCard.Width = tableLayoutPanel1.ClientSize.Width / 1 - 10;
                 bookCard.Height = 170;
-
-                //PictureBox bookImage = new PictureBox();
-                //bookImage.SizeMode = PictureBoxSizeMode.StretchImage;
-                //bookImage.Width = 150;
-                //bookImage.Height = 100;
-                //if (book.BookInvenoryNumber != 0)
-                //{
-                //    if (book.BookInvenoryNumber == 1001) bookImage.Image = Properties.Resources.a1;
-                //    else if (book.BookInvenoryNumber == 1002) bookImage.Image = Properties.Resources.a2;
-                //    else if (book.BookInvenoryNumber == 1004) bookImage.Image = Properties.Resources.a4;
-                //    else if (book.BookInvenoryNumber == 1005) bookImage.Image = Properties.Resources.a5;
-                //    else if (book.BookInvenoryNumber == 1008) bookImage.Image = Properties.Resources.a8;
-                //    else if (book.BookInvenoryNumber == 1010) bookImage.Image = Properties.Resources.a10;
-                //    else if (book.BookInvenoryNumber == 1015) bookImage.Image = Properties.Resources.a15;
-                //    else if (book.BookInvenoryNumber == 1018) bookImage.Image = Properties.Resources.a18;
-                //    else if (book.BookInvenoryNumber == 1020) bookImage.Image = Properties.Resources.a20;
-                //    else if (book.BookInvenoryNumber == 1021) bookImage.Image = Properties.Resources.a21;
-                //    else bookImage.Image = Properties.Resources.picture;
-                //}
-                //else
-                //{
-                //    bookImage.Image = Properties.Resources.picture;
-                //}
-
-                //bookImage.Top = (bookCard.Height - bookImage.Height) / 2;
-                //bookImage.Left = 10;
-
-                
-
                 Panel separationPanel = new Panel();
                 separationPanel.Width = 2;
                 separationPanel.Height = bookCard.Height - 20;
                 separationPanel.BackColor = Color.Black;
                 separationPanel.Top = 5;
-                //separationPanel.Left = bookImage.Right + 20;
                 bookCard.Controls.Add(separationPanel);
 
                 System.Windows.Forms.Label bookNameLabel = new System.Windows.Forms.Label();
                 bookNameLabel.Text = "Название книги:";
                 bookNameLabel.TextAlign = ContentAlignment.MiddleRight;
-               // bookNameLabel.Width = bookImage.Width - 10;
                 bookNameLabel.Top = 0;
-                //bookNameLabel.Left = bookImage.Right - 10;
                 bookCard.Controls.Add(bookNameLabel);
 
                 System.Windows.Forms.Label bookName = new System.Windows.Forms.Label();
@@ -119,9 +89,7 @@ namespace Task_4_Library
                 System.Windows.Forms.Label authorLabel = new System.Windows.Forms.Label();
                 authorLabel.Text = "Автор:";
                 authorLabel.TextAlign = ContentAlignment.MiddleRight;
-                //authorLabel.Width = bookImage.Width - 10;
                 authorLabel.Top = bookName.Bottom + 0;
-                //authorLabel.Left = bookImage.Right - 10;
                 bookCard.Controls.Add(authorLabel);
 
                 System.Windows.Forms.Label bookAuthor = new System.Windows.Forms.Label();
@@ -136,17 +104,14 @@ namespace Task_4_Library
                 System.Windows.Forms.Label bookInvenoryNumberLabel = new System.Windows.Forms.Label();
                 bookInvenoryNumberLabel.Text = "Номер:";
                 bookInvenoryNumberLabel.TextAlign = ContentAlignment.MiddleRight;
-                //bookInvenoryNumberLabel.Width = bookImage.Width - 10;
                 bookInvenoryNumberLabel.Top = bookAuthor.Bottom + 5;
-                //bookInvenoryNumberLabel.Left = bookImage.Right - 10;
                 bookCard.Controls.Add(bookInvenoryNumberLabel);
 
                 System.Windows.Forms.Label InvenoryNumber = new System.Windows.Forms.Label();
                 InvenoryNumber.Text = book.BookInvenoryNumber.ToString();
                 InvenoryNumber.TextAlign = ContentAlignment.MiddleLeft;
-                //InvenoryNumber.Width = bookCard.Width - bookImage.Width - 40;
                 InvenoryNumber.Top = bookInvenoryNumberLabel.Top + 0;
-                InvenoryNumber.Left =bookNameLabel.Right + 10;
+                InvenoryNumber.Left = bookNameLabel.Right + 10;
                 bookCard.Controls.Add(InvenoryNumber);
 
                 System.Windows.Forms.Button infoButton = new System.Windows.Forms.Button();
@@ -195,7 +160,6 @@ namespace Task_4_Library
                 tableLayoutPanel1.Controls.Add(bookCard, row / 1, row % 1);
                 row++;
 
-                
                 if (userRole == 1 || userRole == 2)
                 {
                     infoButton.Visible = true;
@@ -212,17 +176,7 @@ namespace Task_4_Library
             string searchString = textBox1.Text;
             var books = libraryEntities.Book
            .Where(p => p.BookName.Contains(searchString) || p.BookAuthor.Contains(searchString) ||
-               p.BookInvenoryNumber.ToString().Contains(searchString)
-               ).ToList();
-
-            //СОРТИРОВКА ПО ДАТЕ
-            //var books2 = libraryEntities.Register;
-            //if (_selectedSort == "По убыванию даты выдачи")
-            //{
-            //    books2 = books2.OrderByDescending(p => p.RegisterDateIssue).ToList();
-            //}
-
-            //var books = libraryEntities.Register;
+               p.BookInvenoryNumber.ToString().Contains(searchString)).ToList();
             if (_selectedSort == "По убыванию даты выдачи")
             {
                 books = books.OrderByDescending(p => p.BookName).ToList();
