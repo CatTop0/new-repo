@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище LibraryModelContainer" CdmEntityContainer="LibraryEntities">
+    <EntitySetMapping Name="Book">
+      <EntityTypeMapping TypeName="LibraryModel.Book">
+        <MappingFragment StoreEntitySet="Book">
+          <ScalarProperty Name="BookID" ColumnName="BookID" />
+          <ScalarProperty Name="BookName" ColumnName="BookName" />
+          <ScalarProperty Name="BookAuthor" ColumnName="BookAuthor" />
+          <ScalarProperty Name="BookInvenoryNumber" ColumnName="BookInvenoryNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reader">
+      <EntityTypeMapping TypeName="LibraryModel.Reader">
+        <MappingFragment StoreEntitySet="Reader">
+          <ScalarProperty Name="ReaderID" ColumnName="ReaderID" />
+          <ScalarProperty Name="ReaderFullName" ColumnName="ReaderFullName" />
+          <ScalarProperty Name="ReaderAddress" ColumnName="ReaderAddress" />
+          <ScalarProperty Name="ReaderPhoneNumber" ColumnName="ReaderPhoneNumber" />
+          <ScalarProperty Name="ReaderLibraryCardNumber" ColumnName="ReaderLibraryCardNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Role">
+      <EntityTypeMapping TypeName="LibraryModel.Role">
+        <MappingFragment StoreEntitySet="Role">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Register">
+      <EntityTypeMapping TypeName="LibraryModel.Register">
+        <MappingFragment StoreEntitySet="Register">
+          <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+          <ScalarProperty Name="RegisterInventoryNumber" ColumnName="RegisterInventoryNumber" />
+          <ScalarProperty Name="RegisterLibraryCardNumber" ColumnName="RegisterLibraryCardNumber" />
+          <ScalarProperty Name="RegisterDateIssue" ColumnName="RegisterDateIssue" />
+          <ScalarProperty Name="RegisterPlannedDateReturn" ColumnName="RegisterPlannedDateReturn" />
+          <ScalarProperty Name="RegisterActualDateReturn" ColumnName="RegisterActualDateReturn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="LibraryModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+          <ScalarProperty Name="UserLogin" ColumnName="UserLogin" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

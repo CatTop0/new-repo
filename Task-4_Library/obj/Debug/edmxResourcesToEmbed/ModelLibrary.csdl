@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="BookInvenoryNumber" />
+    </Key>
+    <Property Name="BookID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BookAuthor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BookInvenoryNumber" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Register" Relationship="Self.FK_Register_Book" FromRole="Book" ToRole="Register" />
+  </EntityType>
+  <EntityType Name="Reader">
+    <Key>
+      <PropertyRef Name="ReaderLibraryCardNumber" />
+    </Key>
+    <Property Name="ReaderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ReaderFullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ReaderAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ReaderPhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReaderLibraryCardNumber" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Register" Relationship="Self.FK_Register_Reader" FromRole="Reader" ToRole="Register" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_User_Role" FromRole="Role" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Register">
+    <Key>
+      <PropertyRef Name="RegisterID" />
+      <PropertyRef Name="RegisterInventoryNumber" />
+      <PropertyRef Name="RegisterLibraryCardNumber" />
+      <PropertyRef Name="RegisterDateIssue" />
+      <PropertyRef Name="RegisterPlannedDateReturn" />
+    </Key>
+    <Property Name="RegisterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RegisterInventoryNumber" Type="Int32" Nullable="false" />
+    <Property Name="RegisterLibraryCardNumber" Type="Int32" Nullable="false" />
+    <Property Name="RegisterDateIssue" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="RegisterPlannedDateReturn" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="RegisterActualDateReturn" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Book" Relationship="Self.FK_Register_Book" FromRole="Register" ToRole="Book" />
+    <NavigationProperty Name="Reader" Relationship="Self.FK_Register_Reader" FromRole="Register" ToRole="Reader" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserFullName" />
+      <PropertyRef Name="UserLogin" />
+      <PropertyRef Name="UserPassword" />
+      <PropertyRef Name="UserRole" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserFullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserLogin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserRole" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
+  </EntityType>
+  <Association Name="FK_Register_Book">
+    <End Role="Book" Type="Self.Book" Multiplicity="1" />
+    <End Role="Register" Type="Self.Register" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookInvenoryNumber" />
+      </Principal>
+      <Dependent Role="Register">
+        <PropertyRef Name="RegisterInventoryNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Register_Reader">
+    <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+    <End Role="Register" Type="Self.Register" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reader">
+        <PropertyRef Name="ReaderLibraryCardNumber" />
+      </Principal>
+      <Dependent Role="Register">
+        <PropertyRef Name="RegisterLibraryCardNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="UserRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibraryEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Book" EntityType="Self.Book" />
+    <EntitySet Name="Reader" EntityType="Self.Reader" />
+    <EntitySet Name="Role" EntityType="Self.Role" />
+    <EntitySet Name="Register" EntityType="Self.Register" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK_Register_Book" Association="Self.FK_Register_Book">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="Register" EntitySet="Register" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Register_Reader" Association="Self.FK_Register_Reader">
+      <End Role="Reader" EntitySet="Reader" />
+      <End Role="Register" EntitySet="Register" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

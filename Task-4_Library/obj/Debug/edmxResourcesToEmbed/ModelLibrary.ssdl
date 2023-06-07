@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище LibraryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="BookInvenoryNumber" />
+    </Key>
+    <Property Name="BookID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BookName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BookAuthor" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="BookInvenoryNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reader">
+    <Key>
+      <PropertyRef Name="ReaderLibraryCardNumber" />
+    </Key>
+    <Property Name="ReaderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReaderFullName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReaderAddress" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ReaderPhoneNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="ReaderLibraryCardNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Library.dbo.Register" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="Register">
+    <Key>
+      <PropertyRef Name="RegisterID" />
+      <PropertyRef Name="RegisterInventoryNumber" />
+      <PropertyRef Name="RegisterLibraryCardNumber" />
+      <PropertyRef Name="RegisterDateIssue" />
+      <PropertyRef Name="RegisterPlannedDateReturn" />
+    </Key>
+    <Property Name="RegisterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RegisterInventoryNumber" Type="int" Nullable="false" />
+    <Property Name="RegisterLibraryCardNumber" Type="int" Nullable="false" />
+    <Property Name="RegisterDateIssue" Type="date" Nullable="false" />
+    <Property Name="RegisterPlannedDateReturn" Type="date" Nullable="false" />
+    <Property Name="RegisterActualDateReturn" Type="date" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RoleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "Library.dbo.User" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserFullName" />
+      <PropertyRef Name="UserLogin" />
+      <PropertyRef Name="UserPassword" />
+      <PropertyRef Name="UserRole" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserFullName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserLogin" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserRole" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Register_Book">
+    <End Role="Book" Type="Self.Book" Multiplicity="1" />
+    <End Role="Register" Type="Self.Register" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="BookInvenoryNumber" />
+      </Principal>
+      <Dependent Role="Register">
+        <PropertyRef Name="RegisterInventoryNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Register_Reader">
+    <End Role="Reader" Type="Self.Reader" Multiplicity="1" />
+    <End Role="Register" Type="Self.Register" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reader">
+        <PropertyRef Name="ReaderLibraryCardNumber" />
+      </Principal>
+      <Dependent Role="Register">
+        <PropertyRef Name="RegisterLibraryCardNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Role">
+    <End Role="Role" Type="Self.Role" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="UserRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище LibraryModelContainer">
+    <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reader" EntityType="Self.Reader" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Register" EntityType="Self.Register" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Register].[RegisterID] AS [RegisterID], 
+    [Register].[RegisterInventoryNumber] AS [RegisterInventoryNumber], 
+    [Register].[RegisterLibraryCardNumber] AS [RegisterLibraryCardNumber], 
+    [Register].[RegisterDateIssue] AS [RegisterDateIssue], 
+    [Register].[RegisterPlannedDateReturn] AS [RegisterPlannedDateReturn], 
+    [Register].[RegisterActualDateReturn] AS [RegisterActualDateReturn]
+    FROM [dbo].[Register] AS [Register]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [User].[UserID] AS [UserID], 
+    [User].[UserFullName] AS [UserFullName], 
+    [User].[UserLogin] AS [UserLogin], 
+    [User].[UserPassword] AS [UserPassword], 
+    [User].[UserRole] AS [UserRole]
+    FROM [dbo].[User] AS [User]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Register_Book" Association="Self.FK_Register_Book">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="Register" EntitySet="Register" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Register_Reader" Association="Self.FK_Register_Reader">
+      <End Role="Reader" EntitySet="Reader" />
+      <End Role="Register" EntitySet="Register" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
